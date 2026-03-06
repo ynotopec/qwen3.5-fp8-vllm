@@ -28,10 +28,9 @@ echo "Installing vllm and transformers with torch backend..."
 uv pip install --upgrade --force-reinstall vllm \
     --torch-backend=auto \
     --extra-index-url https://wheels.vllm.ai/nightly/cu130
-uv pip install --upgrade --force-reinstall git+https://github.com/huggingface/transformers.git@main
 
-# Install transformers and other dependencies
-uv pip install "transformers[serving] @ git+https://github.com/huggingface/transformers.git@main"
+# Install serving client dependencies
+uv pip install "transformers[serving] @ git+https://github.com/huggingface/transformers.git@main" openai
 
 
 echo ""

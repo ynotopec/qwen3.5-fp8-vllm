@@ -7,7 +7,13 @@ echo "Testing vLLM + Qwen3.5-9B-FP8 connection..."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODEL_NAME=$(basename "$SCRIPT_DIR")
 
-source "$HOME/venv/$MODEL_NAME/bin/activate"
+if [ -d "$HOME/venv/$MODEL_NAME/.venv" ]; then
+    source "$HOME/venv/$MODEL_NAME/.venv/bin/activate"
+elif [ -d "$HOME/venv/$MODEL_NAME/virtualenv" ]; then
+    source "$HOME/venv/$MODEL_NAME/virtualenv/bin/activate"
+else
+    source "$HOME/venv/$MODEL_NAME/bin/activate"
+fi
 
 # Test chat completions API
 python << 'EOF'
