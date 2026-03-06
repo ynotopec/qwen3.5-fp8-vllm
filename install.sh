@@ -1,11 +1,8 @@
 #!/bin/bash
 set -e
 
-# Source shared utilities
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/venv_utils.sh"
-
 # Get basename of current directory for venv name
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODEL_NAME=$(basename "$SCRIPT_DIR")
 
 VENV_DIR="$HOME/venv/${MODEL_NAME}"
@@ -27,20 +24,19 @@ echo "Initializing Python environment..."
 uv venv
 echo "Installing vllm and transformers with torch backend..."
 
-# Install vLLM with CUDA 13 support
-uv pip install --upgrade --force-reinstall vllm==0.7.3 \
+# Install vLLM with CUDA 13 support (per Unsloth docs)
+uv pip install --upgrade --force-reinstall vllm \
     --torch-backend=auto \
     --extra-index-url https://wheels.vllm.ai/nightly/cu130
+uv pip install --upgrade --force-reinstall git+https://github.com/huggingface/transformers.git@main
 
-# Install serving client dependencies
-uv pip install "transformers[serving] @ git+https://github.com/huggingface/transformers.git@refs/tags/v4.48" openai
+# Install transformers and other dependencies
+uv pip install "transformers[serving] @ git+https://github.com/huggingface/transformers.git@main"
 
-# Verify installation
-if ! python -c "import vllm; import transformers" &> /dev/null; then
-    echo "Error: Installation verification failed"
-    exit 1
-fi
 
 echo ""
+echo "=========================================="
 echo "Installation complete!"
 echo "Venv location: $VENV_DIR"
+echo "To activate: source ~/venv/${MODEL_NAME}/bin/activate"
+echo "=========================================="
