@@ -23,7 +23,7 @@ fi
 vllm serve "$MODEL_URL" \
     --port 8000 \
     --tensor-parallel-size 1 \
-    --gpu-memory-utilization 0.15 \
+    --gpu-memory-utilization 0.22 \
     --max-model-len 262144 \
     --reasoning-parser qwen3 \
     --enable-auto-tool-choice \
